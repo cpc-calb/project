@@ -1,4 +1,4 @@
-Vercelimport React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Search, Database, Settings, X, Loader2, AlertCircle } from 'lucide-react';
 
 const App = () => {
@@ -11,15 +11,19 @@ const App = () => {
   const [csvUrl, setCsvUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
 
-  // Default Google Sheet CSV URL (Updated to user's provided link)
+  // Default Google Sheet CSV URL (Updated to user's specified link)
   const defaultCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT6tk1Vr9yFkh8sUOqYxAt7iazLYjSb0grXXbDiHHvRq1askrEF8ahhnixwNSku1nncbkDkMqyrZ595/pub?output=csv';
 
   // Load CSV URL from localStorage on component mount
   useEffect(() => {
+    // Clear localStorage of the old URL to force the new default to load
+    // This is temporary logic to implement the user's immediate request for the new URL.
+    localStorage.removeItem('csvUrl'); 
+    
     const savedUrl = localStorage.getItem('csvUrl') || defaultCsvUrl;
     setCsvUrl(savedUrl);
     setCustomUrl(savedUrl);
-  }, [defaultCsvUrl]); // Include defaultCsvUrl in dependencies if it could change, but here it's constant
+  }, [defaultCsvUrl]);
 
   // Robust CSV parsing function adapted for React state
   const parseCSV = (text) => {
